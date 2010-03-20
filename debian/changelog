@@ -1,3 +1,10 @@
+dosbox (0.73-0ubuntu1+ppa1~karmic1) karmic; urgency=low
+
+  * Add a patch for mouse swap
+  	- Thanks to rickyrockrat on ubuntuforums.org. (http://tinyurl.com/y92fkuu)
+
+ -- dodamn <dodamn@gmail.com>  Sat, 20 Mar 2010 11:11:48 +0900
+
 dosbox (0.73-0ubuntu1) karmic; urgency=low
 
   * New upstream release (LP: #382024).
