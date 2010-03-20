@@ -1,9 +1,8 @@
 Source: dosbox
 Section: otherosfs
 Priority: optional
-Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
-XSBC-Original-Maintainer: Peter Veenstra <spiru@fmf.nl>
-Uploaders: Markus Schölzel <makke@sidux.com>
+Maintainer: dodamn <dodamn@gmail.com>
+XSBC-Original-Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
 Homepage: http://www.dosbox.com/
 Build-Depends: cdbs, debhelper (>= 6), libsdl1.2-dev, libpng12-dev, libsdl-net1.2-dev, libsdl-sound1.2-dev, libasound2-dev
 Standards-Version: 3.7.3
