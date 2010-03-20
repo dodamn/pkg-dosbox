@@ -1,6 +1,6 @@
 diff -Nur -x '*.orig' -x '*~' dosbox/debian/dosbox.conf.example dosbox.new/debian/dosbox.conf.example
 --- dosbox/debian/dosbox.conf.example	2010-03-20 10:36:26.186865510 +0900
-+++ dosbox.new/debian/dosbox.conf.example	2010-03-20 10:57:40.535612736 +0900
++++ dosbox.new/debian/dosbox.conf.example	2010-03-20 11:36:12.345613620 +0900
 @@ -9,6 +9,7 @@
  # windowresolution -- Scale the window to this size IF the output device supports hardware scaling.
  # output -- What to use for output: surface,overlay,opengl,openglnb.
@@ -19,7 +19,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/debian/dosbox.conf.example dosbox.new/debia
  priority=higher,normal
 diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlmain.cpp
 --- dosbox/src/gui/sdlmain.cpp	2009-05-26 03:44:46.000000000 +0900
-+++ dosbox.new/src/gui/sdlmain.cpp	2010-03-20 10:55:51.796862848 +0900
++++ dosbox.new/src/gui/sdlmain.cpp	2010-03-20 11:37:09.405612325 +0900
 @@ -209,6 +209,7 @@
  		bool autoenable;
  		bool requestlock;
@@ -44,7 +44,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlm
 +			if (sdl.mouse.buttonswap) {
 +				Mouse_ButtonPressed(1);
 +			} else {
-+				Mouse_ButtonPressed(0)
++				Mouse_ButtonPressed(0);
 +			}
  			break;
  		case SDL_BUTTON_RIGHT:
