@@ -1,11 +1,11 @@
 diff -Nur -x '*.orig' -x '*~' dosbox/debian/dosbox.conf.example dosbox.new/debian/dosbox.conf.example
 --- dosbox/debian/dosbox.conf.example	2010-03-20 10:36:26.186865510 +0900
-+++ dosbox.new/debian/dosbox.conf.example	2010-03-20 11:36:12.345613620 +0900
++++ dosbox.new/debian/dosbox.conf.example	2010-03-20 11:52:31.325613831 +0900
 @@ -9,6 +9,7 @@
  # windowresolution -- Scale the window to this size IF the output device supports hardware scaling.
  # output -- What to use for output: surface,overlay,opengl,openglnb.
  # autolock -- Mouse will automatically lock, if you click on the screen.
-+# buttonswap -- Left and right buttons on mouse is swapped.
++# buttonswap -- Left and right buttons on mouse is swapped when fullscreen is on.
  # sensitiviy -- Mouse sensitivity.
  # waitonerror -- Wait before closing the console if dosbox has an error.
  # priority -- Priority levels for dosbox: lowest,lower,normal,higher,highest,pause (when not focussed).
@@ -19,7 +19,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/debian/dosbox.conf.example dosbox.new/debia
  priority=higher,normal
 diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlmain.cpp
 --- dosbox/src/gui/sdlmain.cpp	2009-05-26 03:44:46.000000000 +0900
-+++ dosbox.new/src/gui/sdlmain.cpp	2010-03-20 11:37:09.405612325 +0900
++++ dosbox.new/src/gui/sdlmain.cpp	2010-03-20 11:52:46.317332023 +0900
 @@ -209,6 +209,7 @@
  		bool autoenable;
  		bool requestlock;
@@ -41,7 +41,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlm
  		switch (button->button) {
  		case SDL_BUTTON_LEFT:
 -			Mouse_ButtonPressed(0);
-+			if (sdl.mouse.buttonswap) {
++			if (sdl.desktop.fullscreen && sdl.mouse.buttonswap) {
 +				Mouse_ButtonPressed(1);
 +			} else {
 +				Mouse_ButtonPressed(0);
@@ -49,7 +49,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlm
  			break;
  		case SDL_BUTTON_RIGHT:
 -			Mouse_ButtonPressed(1);
-+			if (sdl.mouse.buttonswap) {
++			if (sdl.desktop.fullscreen && sdl.mouse.buttonswap) {
 +				Mouse_ButtonPressed(0);
 +			} else {
 +				Mouse_ButtonPressed(1);
@@ -62,7 +62,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlm
  		switch (button->button) {
  		case SDL_BUTTON_LEFT:
 -			Mouse_ButtonReleased(0);
-+			if (sdl.mouse.buttonswap) {
++			if (sdl.desktop.fullscreen && sdl.mouse.buttonswap) {
 +				Mouse_ButtonReleased(1);
 +			} else {
 +				Mouse_ButtonReleased(0);
@@ -70,7 +70,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlm
  			break;
  		case SDL_BUTTON_RIGHT:
 -			Mouse_ButtonReleased(1);
-+			if (sdl.mouse.buttonswap) {
++			if (sdl.desktop.fullscreen && sdl.mouse.buttonswap) {
 +				Mouse_ButtonReleased(0);
 +			} else {
 +				Mouse_ButtonReleased(1);
@@ -83,7 +83,7 @@ diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlm
  	Pbool->Set_help("Mouse will automatically lock, if you click on the screen.");
  
 +	Pbool = sdl_sec->Add_bool("buttonswap",Property::Changeable::Always,false);
-+	Pbool->Set_help("Left and right buttons on mouse are swapped.");
++	Pbool->Set_help("Left and right buttons on mouse are swapped when fullscreen is on.");
 +
  	Pint = sdl_sec->Add_int("sensitivity",Property::Changeable::Always,100);
  	Pint->SetMinMax(1,1000);
