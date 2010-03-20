@@ -1,0 +1,90 @@
+diff -Nur -x '*.orig' -x '*~' dosbox/debian/dosbox.conf.example dosbox.new/debian/dosbox.conf.example
+--- dosbox/debian/dosbox.conf.example	2010-03-20 10:36:26.186865510 +0900
++++ dosbox.new/debian/dosbox.conf.example	2010-03-20 10:57:40.535612736 +0900
+@@ -9,6 +9,7 @@
+ # windowresolution -- Scale the window to this size IF the output device supports hardware scaling.
+ # output -- What to use for output: surface,overlay,opengl,openglnb.
+ # autolock -- Mouse will automatically lock, if you click on the screen.
++# buttonswap -- Left and right buttons on mouse is swapped.
+ # sensitiviy -- Mouse sensitivity.
+ # waitonerror -- Wait before closing the console if dosbox has an error.
+ # priority -- Priority levels for dosbox: lowest,lower,normal,higher,highest,pause (when not focussed).
+@@ -22,6 +23,7 @@
+ windowresolution=original
+ output=surface
+ autolock=true
++buttonswap=false
+ sensitivity=100
+ waitonerror=true
+ priority=higher,normal
+diff -Nur -x '*.orig' -x '*~' dosbox/src/gui/sdlmain.cpp dosbox.new/src/gui/sdlmain.cpp
+--- dosbox/src/gui/sdlmain.cpp	2009-05-26 03:44:46.000000000 +0900
++++ dosbox.new/src/gui/sdlmain.cpp	2010-03-20 10:55:51.796862848 +0900
+@@ -209,6 +209,7 @@
+ 		bool autoenable;
+ 		bool requestlock;
+ 		bool locked;
++		bool buttonswap;
+ 		Bitu sensitivity;
+ 	} mouse;
+ 	SDL_Rect updateRects[1024];
+@@ -1089,6 +1090,7 @@
+ 	sdl.mouse.autoenable=section->Get_bool("autolock");
+ 	if (!sdl.mouse.autoenable) SDL_ShowCursor(SDL_DISABLE);
+ 	sdl.mouse.autolock=false;
++	sdl.mouse.buttonswap=section->Get_bool("buttonswap");
+ 	sdl.mouse.sensitivity=section->Get_int("sensitivity");
+ 	std::string output=section->Get_string("output");
+ 
+@@ -1278,10 +1280,18 @@
+ 		}
+ 		switch (button->button) {
+ 		case SDL_BUTTON_LEFT:
+-			Mouse_ButtonPressed(0);
++			if (sdl.mouse.buttonswap) {
++				Mouse_ButtonPressed(1);
++			} else {
++				Mouse_ButtonPressed(0)
++			}
+ 			break;
+ 		case SDL_BUTTON_RIGHT:
+-			Mouse_ButtonPressed(1);
++			if (sdl.mouse.buttonswap) {
++				Mouse_ButtonPressed(0);
++			} else {
++				Mouse_ButtonPressed(1);
++			}
+ 			break;
+ 		case SDL_BUTTON_MIDDLE:
+ 			Mouse_ButtonPressed(2);
+@@ -1291,10 +1301,18 @@
+ 	case SDL_RELEASED:
+ 		switch (button->button) {
+ 		case SDL_BUTTON_LEFT:
+-			Mouse_ButtonReleased(0);
++			if (sdl.mouse.buttonswap) {
++				Mouse_ButtonReleased(1);
++			} else {
++				Mouse_ButtonReleased(0);
++			}
+ 			break;
+ 		case SDL_BUTTON_RIGHT:
+-			Mouse_ButtonReleased(1);
++			if (sdl.mouse.buttonswap) {
++				Mouse_ButtonReleased(0);
++			} else {
++				Mouse_ButtonReleased(1);
++			}
+ 			break;
+ 		case SDL_BUTTON_MIDDLE:
+ 			Mouse_ButtonReleased(2);
+@@ -1493,6 +1511,9 @@
+ 	Pbool = sdl_sec->Add_bool("autolock",Property::Changeable::Always,true);
+ 	Pbool->Set_help("Mouse will automatically lock, if you click on the screen.");
+ 
++	Pbool = sdl_sec->Add_bool("buttonswap",Property::Changeable::Always,false);
++	Pbool->Set_help("Left and right buttons on mouse are swapped.");
++
+ 	Pint = sdl_sec->Add_int("sensitivity",Property::Changeable::Always,100);
+ 	Pint->SetMinMax(1,1000);
+ 	Pint->Set_help("Mouse sensitivity.");
